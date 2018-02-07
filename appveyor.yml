@@ -4,10 +4,12 @@ environment:
     - PYTHON: "C:\\Miniconda36-x64"
       PYTHON_VERSION: "3.6"
       PYTHON_ARCH: "64"    
-
-  global:
-    CIBW_TEST_REQUIRES: pytest
-    CIBW_TEST_COMMAND: "pytest tests"
+    #- PYTHON: "C:\\Miniconda36"
+    #  PYTHON_VERSION: "3.6"
+    #  PYTHON_ARCH: "32"    
+    #- PYTHON: "C:\\Miniconda35-x64"
+    #  PYTHON_VERSION: "3.5"
+    #  PYTHON_ARCH: "64"    
 
 install:
   - if "%PYTHON_VERSION%" == "3.6" set "BASE_PYTHON_VERSION=36"
@@ -25,5 +27,5 @@ install:
 build: false
   
 artifacts:
-  - path: "wheelhouse\\*.whl"
+  - path: "dist\\*.whl"
     name: Wheels
