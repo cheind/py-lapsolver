@@ -4,6 +4,7 @@ environment:
     secure: hnxMBvmJAGM1rQVOUbkGvQ==
 
   matrix:
+    fast_finish: true
     # http://www.appveyor.com/docs/installed-software#python
     - PYTHON: "C:\\Miniconda36-x64"
       PYTHON_VERSION: "3.6"
