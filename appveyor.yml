@@ -34,7 +34,7 @@ build_script:
 
 test_script:
   # Try building source wheel and install  
-  - pip install --verbose dist/*.tar.gz
+  - pip install --verbose dist\\*.tar.gz
   - pytest --pyargs fast_hungarian
   - pip uninstall fast-hungarian
   # Try building binary wheel and install
