@@ -1,6 +1,6 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
-
+#include <algorithm>
 #include <vector>
 #include <limits>
 
@@ -14,19 +14,18 @@ py::tuple solve(py::array_t<double, py::array::c_style | py::array::forcecast> i
     if (buf1.ndim != 2)
         throw std::runtime_error("Number of dimensions must be two");
 
-    
-    const double INVALID = std::numeric_limits<double>::max();
-    
     const int nrows = int(buf1.shape[0]);
-    const int ncols = int(buf1.shape[1]);
-    
+    const int ncols = int(buf1.shape[1]);    
     const int n = std::max(nrows, ncols);
 
-	std::vector<std::vector<double>> costs(n, std::vector<double>(n, INVALID));
+    double *content = (double *)buf1.ptr;
+
+    const double LARGE_COST = (*std::max_element(content, content + nrows*ncols))*2 + 1;
+	std::vector<std::vector<double>> costs(n, std::vector<double>(n, LARGE_COST));
 
     for (int i = 0; i < nrows; i++)
     {   
-        double *cptr = (double *)buf1.ptr + i*ncols;
+        double *cptr = content + i*ncols;
         for (int j =0; j < ncols; j++)
         {
             const double c = cptr[j];
@@ -43,7 +42,7 @@ py::tuple solve(py::array_t<double, py::array::c_style | py::array::forcecast> i
     for (int i = 0; i < nrows; i++)
     {
         int mate = Lmate[i];
-		if (Lmate[i] < ncols && costs[i][mate] != INVALID)
+		if (Lmate[i] < ncols && costs[i][mate] != LARGE_COST)
 		{
             rowids.push_back(i);
             colids.push_back(mate);

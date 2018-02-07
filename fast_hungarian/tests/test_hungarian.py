@@ -35,6 +35,15 @@ def test_nonsquare():
     expected = np.array([[0, 1], [0, 1]])
     np.testing.assert_allclose(r, expected)
 
+    costs = np.array(
+        [[ -17.13614455, -536.59009819],
+        [ 292.64662837,  187.49841358],
+        [ 664.70501771,  948.09658792]])
+
+    expected = np.array([[0, 1], [1, 0]])
+    r = hungarian.solve_minimum_cost(costs)
+    np.testing.assert_allclose(r, expected)
+
 def test_views():
     costs = np.array([[6, 9],[10, 3],[8, 7]], dtype=float)
     np.testing.assert_allclose(hungarian.solve_minimum_cost(costs.T[1:, :]), [[0], [1]])
