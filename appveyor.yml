@@ -29,7 +29,7 @@ build_script:
   - python setup.py develop
 
 test_script:
-  - pytest tests
+  - pytest fast_hungarian/tests
 
 after_test:
   - python setup.py bdist_wheel
