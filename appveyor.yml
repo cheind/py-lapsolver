@@ -37,3 +37,10 @@ after_test:
 artifacts:
   - path: "dist\\*.whl"
     name: Wheels
+
+notifications:
+  - provider: Email
+    to:
+      - christoph.heindl@email.com
+    on_build_success: true
+    on_build_failure: true
