@@ -19,6 +19,7 @@ install:
   - conda config --set auto_update_conda no
   #- conda update -q --all
   - conda install -q pip pytest numpy cmake
+  - git submodule update --init --recursive
   - python setup.py bdist_wheel
 
 build: false
