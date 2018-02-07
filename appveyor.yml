@@ -39,7 +39,7 @@ test_script:
   - pip uninstall fast-hungarian
   # Try building binary wheel and install
   - python setup.py bdist_wheel
-  - pip install --verbose dist/*.whl
+  - pip install --verbose dist\\*.whl
   - pytest --pyargs fast_hungarian
 
 after_test:
