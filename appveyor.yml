@@ -22,7 +22,6 @@ install:
   #- conda update -q --all
   - conda install -q pip pytest numpy cmake
   - git submodule update --init --recursive
-  - python setup.py bdist_wheel
 
 build_script:
   # Build the compiled extension
