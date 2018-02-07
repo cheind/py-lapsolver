@@ -24,10 +24,15 @@ install:
   - git submodule update --init --recursive
   - python setup.py bdist_wheel
 
-build: false
+build_script:
+  # Build the compiled extension
+  - python setup.py build
 
 test_script:
   - pytest tests
+
+after_test:
+  - python setup.py bdist_wheel
   
 artifacts:
   - path: "dist\\*.whl"
