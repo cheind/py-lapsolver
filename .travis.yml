@@ -13,15 +13,15 @@ install:
     - export PATH="$HOME/miniconda/bin:$PATH"
     - hash -r
     - conda config --set always_yes yes --set changeps1 no
-    - conda config --add channels pandas
     - conda update -q conda
     - conda info -a
 
     # Install deps
-    - deps='pip numpy scipy'
-    - conda create -q -n pyenv python=$PYTHON pandas=$PANDAS $deps
+    - deps='pip numpy'
+    - conda create -q -n pyenv python=$PYTHON $deps
     - source activate pyenv
     - pip install pytest
+    - pip install cmake
     - pip install .
 
 script: pytest
