@@ -29,15 +29,20 @@ install:
   - git submodule update --init --recursive
 
 build_script:
-  # Build the compiled extension
-  - python setup.py develop
-
-test_script:
-  - pytest fast_hungarian/tests
-
-after_test:
   - python setup.py sdist
   - python setup.py bdist_wheel
+
+test_script:
+  # Try building source wheel and install  
+  - pip install --verbose dist/*.tar.gz
+  - pytest --pyargs fast_hungarian
+  - pip uninstall fast-hungarian
+  # Try building binary wheel and install
+  - python setup.py bdist_wheel
+  - pip install --verbose dist/*.whl
+  - pytest --pyargs fast_hungarian
+
+after_test:
   - ps: >-
       if ($env:APPVEYOR_REPO_TAG -eq "true" -And $env:APPVEYOR_REPO_BRANCH -eq "master") {
         Write-Output "Deploying to PyPi"
@@ -47,6 +52,7 @@ after_test:
   
 artifacts:
   - path: "dist\\*.whl"
+  - path: "dist\\*.tar.gz"
     name: Wheels
 
 notifications:
