@@ -48,7 +48,7 @@ test_script:
 
 after_test:
   - ps: >-    
-      Write-Output "Deploying to PyPi"
+      Write-Output "Deploying to PyPi";
       pip install twine;
       cmd /c twine upload dist\\* 2>&1;
     
