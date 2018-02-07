@@ -3,9 +3,9 @@ environment:
   TWINE_PASSWORD:
     secure: hnxMBvmJAGM1rQVOUbkGvQ==
 
+  # http://www.appveyor.com/docs/installed-software#python
   matrix:
-    fast_finish: true
-    # http://www.appveyor.com/docs/installed-software#python
+    fast_finish: true    
     - PYTHON: "C:\\Miniconda36-x64"
       PYTHON_VERSION: "3.6"
       PYTHON_ARCH: "64"    
