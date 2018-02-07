@@ -65,7 +65,7 @@ class PyTest(test):
         sys.exit(errno)
 
 setup(
-    name='hungarian',
+    name='fast-hungarian',
     version=open('fast_hungarian/__init__.py').readlines()[-1].split()[-1].strip('\''),
     author='Christoph Heindl',
     url='https://github.com/cheind/py-hungarian-c',
