@@ -18,7 +18,7 @@ install:
   - conda update -q conda
   - conda config --set auto_update_conda no
   - conda update -q --all
-  - conda install -q pip pytest numpy cmake cibuildwheel==0.7.0
+  - conda install -q pip pytest numpy cmake cibuildwheel
   - cibuildwheel --output-dir wheelhouse
 
 build: false
