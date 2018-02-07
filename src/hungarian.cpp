@@ -55,7 +55,7 @@ py::tuple solve(py::array_t<double, py::array::c_style | py::array::forcecast> i
 
 
 
-PYBIND11_MODULE(hungarian, m) {
+PYBIND11_MODULE(fast_hungarian_ext, m) {
     m.doc() = R"pbdoc(
         A fast hungarian solver based on native c-extensions.
     )pbdoc";

@@ -10,7 +10,6 @@ from setuptools.command.test import test
 from distutils.version import LooseVersion
 
 
-
 class CMakeExtension(Extension):
     def __init__(self, name, sourcedir=''):
         super(CMakeExtension, self).__init__(name, sources=[])
@@ -62,20 +61,23 @@ class PyTest(test):
     def run_tests(self):
         # import here, cause outside the eggs aren't loaded
         import pytest
-        errno = pytest.main(['tests'])
+        errno = pytest.main(['fast_hungarian/tests'])
         sys.exit(errno)
 
 setup(
     name='hungarian',
-    version='0.0.1',
+    version=open('fast_hungarian/__init__.py').readlines()[-1].split()[-1].strip('\''),
     author='Christoph Heindl',
     url='https://github.com/cheind/py-hungarian-c',
     description='A fast linear sum assignment solver',
+    license='MIT',
     long_description='',
-    ext_modules=[CMakeExtension('hungarian')],
+    packages=['fast_hungarian', 'fast_hungarian.tests'],
+    ext_modules=[CMakeExtension('fast_hungarian_ext')],
     cmdclass=dict(build_ext=CMakeBuild, test=PyTest),
     zip_safe=False,
     python_requires='>=3',
     setup_requires=['pytest-runner'],
     tests_require=['pytest'],
+    keywords='hungarian munkres kuhn linear-sum-assignment bipartite-graph'
 )

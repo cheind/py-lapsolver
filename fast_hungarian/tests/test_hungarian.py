@@ -1,6 +1,6 @@
 import pytest
 import numpy as np
-import hungarian
+import fast_hungarian as hungarian
 
 def test_small():
     costs = np.array([[6, 9, 1],[10, 3, 2],[8, 7, 4.]], dtype=np.float32)    

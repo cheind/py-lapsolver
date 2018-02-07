@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.1)
-project(hungarian)
+project(fast_hungarian)
 
 add_subdirectory(pybind11)
-pybind11_add_module(hungarian src/hungarian.cpp)
+pybind11_add_module(fast_hungarian_ext src/hungarian.cpp)
