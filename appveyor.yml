@@ -15,9 +15,7 @@ environment:
       PYTHON_ARCH: "32"
 
 install:
-  - if "%PYTHON_VERSION%" == "3.6" set "BASE_PYTHON_VERSION=36"
-  - if "%PYTHON_ARCH%" == "64" set "ARCH_LABEL=-x64"
-  - set "CONDA_ROOT=C:\Miniconda%BASE_PYTHON_VERSION%%ARCH_LABEL%"
+  - set "CONDA_ROOT=%PYTHON%"
   - set "PATH=%CONDA_ROOT%;%CONDA_ROOT%\Scripts;%CONDA_ROOT%\Library\bin;%PATH%"
   - conda config --set always_yes yes
   - conda update -q conda
