@@ -77,7 +77,7 @@ setup(
     cmdclass=dict(build_ext=CMakeBuild, test=PyTest),
     zip_safe=False,
     python_requires='>=3',
-    setup_requires=['pytest-runner'],
+    setup_requires=['pytest-runner', 'cmake'],
     tests_require=['pytest'],
     keywords='hungarian munkres kuhn linear-sum-assignment bipartite-graph'
 )
