@@ -21,7 +21,7 @@ install:
     - conda create -q -n pyenv python=$PYTHON $deps
     - source activate pyenv
     - pip install pytest
-    - pip install cmake
+    - pip install cmake    
     - pip install .
 
-script: pytest
+script: pytest fast_hungarian
