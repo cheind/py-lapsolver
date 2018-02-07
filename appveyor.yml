@@ -25,6 +25,9 @@ install:
   - python setup.py bdist_wheel
 
 build: false
+
+test_script:
+  - pytest tests
   
 artifacts:
   - path: "dist\\*.whl"
