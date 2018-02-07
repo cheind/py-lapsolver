@@ -19,10 +19,10 @@ install:
   - conda config --set auto_update_conda no
   #- conda update -q --all
   - conda install -q pip pytest numpy cmake
-
-build:
   - python setup.py bdist_wheel
 
+build: false
+  
 artifacts:
   - path: "wheelhouse\\*.whl"
     name: Wheels
