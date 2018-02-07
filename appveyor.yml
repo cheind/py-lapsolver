@@ -17,11 +17,11 @@ install:
   - conda config --set always_yes yes
   - conda update -q conda
   - conda config --set auto_update_conda no
-  - conda update -q --all
-  - conda install -q pip pytest numpy cmake cibuildwheel
-  - cibuildwheel --output-dir wheelhouse
+  #- conda update -q --all
+  - conda install -q pip pytest numpy cmake
 
-build: false
+build:
+  - python setup.py bdist_wheel
 
 artifacts:
   - path: "wheelhouse\\*.whl"
