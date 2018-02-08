@@ -46,8 +46,16 @@ test_script:
   - pytest --pyargs lapsolver
   - pip uninstall -y lapsolver
 
-after_test:
-  - cmd: powershell .\deploy_pypi.ps1
+on_success:
+  - if($env:APPVEYOR_REPO_TAG -eq 'true') {
+      Write-Output ("Deploying " + $env:APPVEYOR_REPO_TAG_NAME + " to PyPI")
+      pip install --upgrade twine
+      # If powershell ever sees anything on stderr it thinks it's a fail.
+      # So we use cmd to redirect stderr to stdout before PS can see it.
+      cmd /c 'twine upload dist\* 2>&1'
+    } else {
+      Write-Output "Not deploying as this is not a tagged commit"
+    }
     
 artifacts:
   - path: "dist\\*.whl"
