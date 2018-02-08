@@ -1,9 +1,9 @@
-**py-lapsolver** implements fast linear sum assignment problem solvers. It uses a C++ based solver from https://github.com/jaehyunp/
+**py-lapsolver** implements a fast linear sum assignment problem solver for dense matrices. In practice, it solves 5000x5000 problems in around 3 seconds.
 
 ### Install
 
 ```
-pip install lapsolver
+pip install lapsolver [--pre]
 ```
 
 Windows binary wheels are provided for Python 3.5/3.6. Source wheels otherwise.
@@ -58,74 +58,84 @@ Comparison below is carried out on dense square/rectangular matrices using tools
 
 Benchmark on square matrices
 ```
-                           Runtime [sec]
+                      Runtime [sec]
 Matrix      Solver
-3x3         fast_hungarian         0.000
-            scipy                  0.000
-            ortools                0.000
-            munkres                0.000
-10x10       fast_hungarian         0.000
-            scipy                  0.000
-            ortools                0.001
-            munkres                0.001
-100x100     fast_hungarian         0.000
-            scipy                  0.036
-            ortools                0.013
-            munkres                2.051
-200x200     fast_hungarian         0.001
-            scipy                  0.202
-            ortools                0.056
-            munkres               17.259
-500x500     fast_hungarian         0.011
-            scipy                  5.238
-            ortools                0.351
-            munkres                    -
-1000x1000   fast_hungarian         0.051
-            scipy                      -
-            ortools                1.436
-            munkres                    -
-5000x5000   fast_hungarian         3.183
-            scipy                      -
-            ortools               36.604
-            munkres                    -
-10000x10000 fast_hungarian        13.942
-            scipy                      -
-            ortools                    -
-            munkres                    -
+3x3         lapsolver         0.000
+            scipy             0.000
+            ortools           0.000
+            munkres           0.000
+10x10       lapsolver         0.000
+            scipy             0.001
+            ortools           0.000
+            munkres           0.001
+100x100     lapsolver         0.000
+            scipy             0.029
+            ortools           0.012
+            munkres           1.550
+200x200     lapsolver         0.002
+            scipy             0.246
+            ortools           0.050
+            munkres          20.061
+500x500     lapsolver         0.011
+            scipy             5.738
+            ortools           0.318
+            munkres               -
+1000x1000   lapsolver         0.054
+            scipy                 -
+            ortools           1.302
+            munkres               -
+5000x5000   lapsolver         2.433
+            scipy                 -
+            ortools          33.684
+            munkres               -
+10000x10000 lapsolver        19.877
+            scipy                 -
+            ortools               -
+            munkres               -
 ```
 
 Benchmark on non-square matrices
 ```
-                         Runtime [sec]
-Matrix    Solver
-3x3       fast_hungarian         0.000
-          scipy                  0.000
-          ortools                0.000
-          munkres                0.000
-10x10     fast_hungarian         0.000
-          scipy                  0.001
-          ortools                0.000
-          munkres                0.001
-100x100   fast_hungarian         0.000
-          scipy                  0.028
-          ortools                0.012
-          munkres                1.604
-200x200   fast_hungarian         0.001
-          scipy                  0.189
-          ortools                0.050
-          munkres               16.449
-500x500   fast_hungarian         0.008
-          scipy                  5.025
-          ortools                0.320
-          munkres                    -
-1000x1000 fast_hungarian         0.052
-          scipy                      -
-          ortools                1.299
-          munkres                    -
-5000x5000 fast_hungarian         2.383
-          scipy                      -
-          ortools               33.906
-          munkres                    -
+                 Runtime [sec]
+Matrix Solver
+3x2    lapsolver         0.000
+       scipy             0.001
+       ortools           0.000
+       munkres               -
+10x5   lapsolver         0.000
+       scipy             0.000
+       ortools           0.000
+       munkres               -
+100x10 lapsolver         0.002
+       scipy             0.000
+       ortools           0.003
+       munkres               -
+200x20 lapsolver         0.010
+       scipy             0.000
+       ortools           0.014
+       munkres               -
+500x50 lapsolver         0.130
+       scipy             0.011
+       ortools           0.150
+       munkres               -
+2x3    lapsolver         0.000
+       scipy             0.000
+       ortools           0.001
+       munkres               -
+5x10   lapsolver         0.000
+       scipy             0.001
+       ortools           0.000
+       munkres               -
+10x100 lapsolver         0.000
+       scipy             0.001
+       ortools           0.002
+       munkres               -
+20x200 lapsolver         0.001
+       scipy             0.002
+       ortools           0.005
+       munkres               -
+50x500 lapsolver         0.004
+       scipy             0.014
+       ortools           0.034
+       munkres               -
 ```
-
-https://web.eecs.umich.edu/~pettie/matching/Jonker-Volgenant-teaching-Macks-Bradford-method.pdf
