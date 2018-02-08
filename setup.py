@@ -68,7 +68,7 @@ class PyTest(test):
 version = open('lapsolver/__init__.py').readlines()[-1].split()[-1].strip('\'')
 if os.getenv('LAPSOLVER_RELEASE_TYPE', 'stable') == 'dev':
     import pkg_resources
-    pkg_resources.extern.packaging.version.Version = pkg_resources.SetuptoolsLegacyVersion
+    pkg_resources.extern.packaging.version.Version = pkg_resources.SetuptoolsLegacyVersion # don't normalize version
     version = version + '-dev' + os.getenv('LAPSOLVER_DEV_NUM', '0') # this will allow pre-releases pip install --pre lapsolver
 
 setup(
