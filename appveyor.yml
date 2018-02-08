@@ -37,20 +37,22 @@ test_script:
   - ps: >-
       $wheel = cmd /r dir .\dist\*.tar.gz /b/s;
       pip install --verbose $wheel
-  - pytest --pyargs fast_hungarian
-  - pip uninstall -y fast-hungarian
+  - pytest --pyargs lapsolver
+  - pip uninstall -y lapsolver
   # Try building binary wheel and install
   - ps: >-
       $wheel = cmd /r dir .\dist\*.whl /b/s;
       pip install --verbose $wheel  
-  - pytest --pyargs fast_hungarian
-  - pip uninstall -y fast-hungarian
+  - pytest --pyargs lapsolver
+  - pip uninstall -y lapsolver
 
 after_test:
-  - ps: >-    
-      Write-Output "Deploying to PyPi";
-      pip install twine;
-      cmd /c twine upload dist\\* 2>&1;
+  - ps: >-
+      if ($env:APPVEYOR_REPO_TAG -eq "true" -And $env:APPVEYOR_REPO_BRANCH -eq "master") {
+        Write-Output "Deploying to PyPi";
+        pip install twine;
+        cmd /c twine upload dist\\* 2>&1;
+      }
     
 artifacts:
   - path: "dist\\*.whl"
@@ -63,9 +65,3 @@ notifications:
       - christoph.heindl@email.com
     on_build_success: true
     on_build_failure: true
-
-#      if ($env:APPVEYOR_REPO_TAG -eq "true" -And $env:APPVEYOR_REPO_BRANCH -eq "master") {
-#        Write-Output "Deploying to PyPi"
-#        pip install twine;
-#        cmd /c twine upload dist\\* 2>&1;
-#      }

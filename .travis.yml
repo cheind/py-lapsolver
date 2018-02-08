@@ -24,4 +24,4 @@ install:
     - pip install cmake    
     - pip install .
 
-script: pytest fast_hungarian
+script: pytest --pyargs lapsolver

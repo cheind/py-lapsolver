@@ -61,23 +61,23 @@ class PyTest(test):
     def run_tests(self):
         # import here, cause outside the eggs aren't loaded
         import pytest
-        errno = pytest.main(['fast_hungarian/tests'])
+        errno = pytest.main(['lapsolver/tests'])
         sys.exit(errno)
 
 setup(
-    name='fast-hungarian',
-    version=open('fast_hungarian/__init__.py').readlines()[-1].split()[-1].strip('\''),
+    name='lapsolver',
+    version=open('lapsolver/__init__.py').readlines()[-1].split()[-1].strip('\''),
     author='Christoph Heindl',
-    url='https://github.com/cheind/py-hungarian-c',
-    description='A fast linear sum assignment solver',
+    url='https://github.com/cheind/py-lapsolver',
+    description='Fast linear assignment problem solvers',
     license='MIT',
     long_description='',
-    packages=['fast_hungarian', 'fast_hungarian.tests'],
-    ext_modules=[CMakeExtension('fast_hungarian_ext')],
+    packages=['lapsolver', 'lapsolver.tests'],
+    ext_modules=[CMakeExtension('lapsolverc')],
     cmdclass=dict(build_ext=CMakeBuild, test=PyTest),
     zip_safe=False,
     python_requires='>=3',
     setup_requires=['pytest-runner'],
     tests_require=['pytest'],
-    keywords='hungarian munkres kuhn linear-sum-assignment bipartite-graph'
+    keywords='hungarian munkres kuhn linear-sum-assignment bipartite-graph lap'
 )

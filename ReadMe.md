@@ -1,18 +1,18 @@
-**py-hungarian-c** implements a fast linear sum assignment problem solver. It uses a C++ based solver from https://github.com/jaehyunp/
+**py-lapsolver** implements fast linear sum assignment problem solvers. It uses a C++ based solver from https://github.com/jaehyunp/
 
 ### Install
 
 ```
-pip install fast-hungarian
+pip install lapsolver
 ```
 
-Windows binary wheels are provided for Python 3.5/3.6. Source wheels else.
+Windows binary wheels are provided for Python 3.5/3.6. Source wheels otherwise.
 
 ### Usage
 
 ```python
 import numpy as np
-from fast_hungarian import solve_minimum_cost
+from lapsolver import solve_dense
 
 costs = np.array([
     [6, 9, 1],
@@ -20,7 +20,7 @@ costs = np.array([
     [8, 7, 4.]
 ], dtype=np.float32)    
 
-rids, cids = solve_minimum_cost(costs)
+rids, cids = solve_dense(costs)
 
 for r,c in zip(rids, cids):
     print(r,c) # Row/column pairings
@@ -41,7 +41,7 @@ costs = np.array([
     [8, 7, 4.]]
 )
 
-rids, cids = solve_minimum_cost(costs)
+rids, cids = solve_dense(costs)
 
 for r,c in zip(rids, cids):
     print(r,c) # Row/column pairings
@@ -58,37 +58,40 @@ Comparison below is carried out on dense square/rectangular matrices using tools
 
 Benchmark on square matrices
 ```
-
-                         Runtime [sec]
-Matrix    Solver
-3x3       fast_hungarian         0.000
-          scipy                  0.000
-          ortools                0.000
-          munkres                0.000
-10x10     fast_hungarian         0.000
-          scipy                  0.001
-          ortools                0.000
-          munkres                0.001
-100x100   fast_hungarian         0.000
-          scipy                  0.028
-          ortools                0.012
-          munkres                1.604
-200x200   fast_hungarian         0.001
-          scipy                  0.189
-          ortools                0.050
-          munkres               16.449
-500x500   fast_hungarian         0.008
-          scipy                  5.025
-          ortools                0.320
-          munkres                    -
-1000x1000 fast_hungarian         0.052
-          scipy                      -
-          ortools                1.299
-          munkres                    -
-5000x5000 fast_hungarian         2.383
-          scipy                      -
-          ortools               33.906
-          munkres                    -
+                           Runtime [sec]
+Matrix      Solver
+3x3         fast_hungarian         0.000
+            scipy                  0.000
+            ortools                0.000
+            munkres                0.000
+10x10       fast_hungarian         0.000
+            scipy                  0.000
+            ortools                0.001
+            munkres                0.001
+100x100     fast_hungarian         0.000
+            scipy                  0.036
+            ortools                0.013
+            munkres                2.051
+200x200     fast_hungarian         0.001
+            scipy                  0.202
+            ortools                0.056
+            munkres               17.259
+500x500     fast_hungarian         0.011
+            scipy                  5.238
+            ortools                0.351
+            munkres                    -
+1000x1000   fast_hungarian         0.051
+            scipy                      -
+            ortools                1.436
+            munkres                    -
+5000x5000   fast_hungarian         3.183
+            scipy                      -
+            ortools               36.604
+            munkres                    -
+10000x10000 fast_hungarian        13.942
+            scipy                      -
+            ortools                    -
+            munkres                    -
 ```
 
 Benchmark on non-square matrices
@@ -124,3 +127,5 @@ Matrix    Solver
           ortools               33.906
           munkres                    -
 ```
+
+https://web.eecs.umich.edu/~pettie/matching/Jonker-Volgenant-teaching-Macks-Bradford-method.pdf

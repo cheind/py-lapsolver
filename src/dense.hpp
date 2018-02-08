@@ -1,29 +1,44 @@
-// The following code is taken copied from https://github.com/jaehyunp/
-// and adapted by https://github.com/cheind.
-
-//////////////////////////////////////////////////////////////////////
-// Min cost bipartite matching via shortest augmenting paths
-//
-// This is an O(n^3) implementation of a shortest augmenting path
-// algorithm for finding min cost perfect matchings in dense
-// graphs.  In practice, it solves 1000x1000 problems in around 1
-// second.
-//
-//   cost[i][j] = cost for pairing left node i with right node j
-//   Lmate[i] = index of right node that left node i pairs with
-//   Rmate[j] = index of left node that right node j pairs with
-//
-// The values in cost[i][j] may be positive or negative.  To perform
-// maximization, simply negate the cost[][] matrix.
-//////////////////////////////////////////////////////////////////////
-
 #include <algorithm>
 #include <cmath>
 #include <vector>
 
+/**
+	Min cost bipartite matching via shortest augmenting paths
+
+	This is an O(n^3) implementation of a shortest augmenting path
+	algorithm for finding min cost perfect matchings in dense
+	graphs.  In practice, it solves 1000x1000 problems in around 1
+	second.
+  
+  	cost[i][j] = cost for pairing left node i with right node j
+  	Lmate[i] = index of right node that left node i pairs with
+  	Rmate[j] = index of left node that right node j pairs with
+	The values in cost[i][j] may be positive or negative.  To perform
+	maximization, simply negate the cost[][] matrix.
+
+	Taken from https://github.com/jaehyunp/
+	Adapted by https://github.com/cheind
+*/
 template<class T>
-void MinCostMatching(const std::vector< std::vector<T> > &cost, std::vector<int> &Lmate, std::vector<int> &Rmate)
+void solve_dense(const std::vector< std::vector<T> > &cost, std::vector<int> &Lmate, std::vector<int> &Rmate)
 {
+	
+	//////////////////////////////////////////////////////////////////////
+	// Min cost bipartite matching via shortest augmenting paths
+	//
+	// This is an O(n^3) implementation of a shortest augmenting path
+	// algorithm for finding min cost perfect matchings in dense
+	// graphs.  In practice, it solves 1000x1000 problems in around 1
+	// second.
+	//
+	//   cost[i][j] = cost for pairing left node i with right node j
+	//   Lmate[i] = index of right node that left node i pairs with
+	//   Rmate[j] = index of left node that right node j pairs with
+	//
+	// The values in cost[i][j] may be positive or negative.  To perform
+	// maximization, simply negate the cost[][] matrix.
+	//////////////////////////////////////////////////////////////////////
+
 	typedef std::vector<T> VD;
 	typedef std::vector<VD> VVD;
 	typedef std::vector<int> VI;

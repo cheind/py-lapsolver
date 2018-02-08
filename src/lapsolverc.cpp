@@ -4,11 +4,11 @@
 #include <vector>
 #include <limits>
 
-#include "hungarian.hpp"
+#include "dense.hpp"
 
 namespace py = pybind11;
 
-py::tuple solve(py::array_t<double, py::array::c_style | py::array::forcecast> input1) {
+py::tuple solve_dense_wrap(py::array_t<double, py::array::c_style | py::array::forcecast> input1) {
     auto buf1 = input1.request();
 
     if (buf1.ndim != 2)
@@ -35,7 +35,7 @@ py::tuple solve(py::array_t<double, py::array::c_style | py::array::forcecast> i
     }
 
     std::vector<int> Lmate, Rmate;
-    MinCostMatching(costs, Lmate, Rmate);
+    solve_dense(costs, Lmate, Rmate);
 
     std::vector<int> rowids, colids;
 
@@ -54,13 +54,34 @@ py::tuple solve(py::array_t<double, py::array::c_style | py::array::forcecast> i
 
 
 
-PYBIND11_MODULE(fast_hungarian_ext, m) {
+PYBIND11_MODULE(lapsolverc, m) {
     m.doc() = R"pbdoc(
-        A fast hungarian solver based on native c-extensions.
+        Linear assignment problem solver using native c-extensions.
     )pbdoc";
 
-    m.def("solve_minimum_cost", &solve, R"pbdoc(
-        Solve it
+    m.def("solve_dense", &solve_dense_wrap, R"pbdoc(
+        Min cost bipartite matching via shortest augmenting paths for dense matrices
+
+        This is an O(n^3) implementation of a shortest augmenting path
+        algorithm for finding min cost perfect matchings in dense
+        graphs.  In practice, it solves 1000x1000 problems in around 1
+        second.
+
+            rids, cids = solve_dense(costs)
+            total_cost = costs[rids, cids].sum()
+
+        Params
+        ------
+        costs : MxN array
+            Array containing costs.
+
+        Returns
+        -------
+        rids : array
+            Array of row ids of matching pairings
+        cids : array
+            Array of column ids of matching pairings
+  
     )pbdoc");
 
 #ifdef VERSION_INFO
