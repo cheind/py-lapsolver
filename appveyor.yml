@@ -24,7 +24,7 @@ install:
   - conda config --set always_yes yes
   - conda update -q conda
   - conda config --set auto_update_conda no
-  - conda update -q --all
+  - conda update anaconda
   - conda install -q pip pytest numpy cmake
   - git submodule update --init --recursive
   - ps: >-
