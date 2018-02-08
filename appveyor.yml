@@ -24,8 +24,9 @@ install:
   - conda config --set always_yes yes
   - conda update -q conda
   - conda config --set auto_update_conda no
-  - conda update anaconda
   - conda install -q pip pytest numpy cmake
+  - pip install --upgrade pip
+  - pip install wheel
   - git submodule update --init --recursive
   - ps: >-
       if ($env:APPVEYOR_REPO_BRANCH -eq 'develop') {
