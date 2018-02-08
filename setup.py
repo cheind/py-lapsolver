@@ -64,9 +64,14 @@ class PyTest(test):
         errno = pytest.main(['lapsolver/tests'])
         sys.exit(errno)
 
+
+version = open('lapsolver/__init__.py').readlines()[-1].split()[-1].strip('\'')
+if os.getenv('LAPSOLVER_RELEASE_TYPE', 'stable') == 'dev':
+    version = version + '.dev' + os.getenv('LAPSOLVER_DEV_NUM', '0') # this will allow pre-releases pip install --pre lapsolver
+
 setup(
     name='lapsolver',
-    version=open('lapsolver/__init__.py').readlines()[-1].split()[-1].strip('\''),
+    version=version,
     author='Christoph Heindl',
     url='https://github.com/cheind/py-lapsolver',
     description='Fast linear assignment problem solvers',

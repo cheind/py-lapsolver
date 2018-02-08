@@ -27,6 +27,13 @@ install:
   #- conda update -q --all
   - conda install -q pip pytest numpy cmake
   - git submodule update --init --recursive
+  - ps: >-
+      if ($env:APPVEYOR_REPO_BRANCH -eq 'develop') {
+        $env:LAPSOLVER_RELEASE_TYPE="dev";
+        $env:LAPSOLVER_RELEASE_NUM=$env:APPVEYOR_BUILD_NUMBER
+      } else {
+        $env:LAPSOLVER_RELEASE_TYPE="stable"
+      }
 
 build_script:
   - python setup.py sdist
@@ -48,8 +55,8 @@ test_script:
 
 on_success:
   ps: >-
-    if($env:APPVEYOR_REPO_TAG -eq 'true') {
-      Write-Output ("Deploying " + $env:APPVEYOR_REPO_TAG_NAME + " to PyPI")
+    if ($env:APPVEYOR_REPO_BRANCH -eq 'develop') {
+      Write-Output ("Deploying to PyPI")
       pip install --upgrade twine
       # If powershell ever sees anything on stderr it thinks it's a fail.
       # So we use cmd to redirect stderr to stdout before PS can see it.
@@ -69,3 +76,8 @@ notifications:
       - christoph.heindl@email.com
     on_build_success: true
     on_build_failure: true
+
+branches:
+  only:
+    - master
+    - develop
