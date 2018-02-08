@@ -30,7 +30,7 @@ install:
   - ps: >-
       if ($env:APPVEYOR_REPO_BRANCH -eq 'develop') {
         $env:LAPSOLVER_RELEASE_TYPE="dev";
-        $env:LAPSOLVER_RELEASE_NUM=$env:APPVEYOR_BUILD_NUMBER
+        $env:LAPSOLVER_DEV_NUM=$env:APPVEYOR_BUILD_NUMBER
       } else {
         $env:LAPSOLVER_RELEASE_TYPE="stable"
       }
