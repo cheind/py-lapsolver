@@ -3,10 +3,13 @@
 #include <algorithm>
 #include <vector>
 #include <limits>
+#include <iostream>
 
 #include "dense.hpp"
 
 namespace py = pybind11;
+
+//py::isinstance<py::array_t<std::int32_t>>(buf)
 
 py::tuple solve_dense_wrap(py::array_t<double, py::array::c_style | py::array::forcecast> input1) {
     auto buf1 = input1.request();
@@ -16,16 +19,33 @@ py::tuple solve_dense_wrap(py::array_t<double, py::array::c_style | py::array::f
 
     const int nrows = int(buf1.shape[0]);
     const int ncols = int(buf1.shape[1]);    
+
+    if (nrows == 0 || ncols == 0) {
+        return py::make_tuple(py::array(), py::array());
+    }
+
+    double *data = (double *)buf1.ptr;
+
+    bool any_finite = false;
+    double LARGE_COST = 0.;
+    for(int i = 0; i < nrows*ncols; ++i) {
+        if (std::isfinite(data[i])) {
+            any_finite = true;
+            LARGE_COST = std::max<double>(LARGE_COST, data[i]);
+        }
+    }
+         
+    if (nrows == 0 || ncols == 0 || !any_finite) {
+        return py::make_tuple(py::array(), py::array());
+    }
+
+    LARGE_COST = 2*LARGE_COST + 1;
     const int n = std::max(nrows, ncols);
-
-    double *content = (double *)buf1.ptr;
-
-    const double LARGE_COST = (*std::max_element(content, content + nrows*ncols))*2 + 1;
-	std::vector<std::vector<double>> costs(n, std::vector<double>(n, LARGE_COST));
+    std::vector<std::vector<double>> costs(n, std::vector<double>(n, LARGE_COST));
 
     for (int i = 0; i < nrows; i++)
     {   
-        double *cptr = content + i*ncols;
+        double *cptr = data + i*ncols;
         for (int j =0; j < ncols; j++)
         {
             const double c = cptr[j];
@@ -33,6 +53,7 @@ py::tuple solve_dense_wrap(py::array_t<double, py::array::c_style | py::array::f
                 costs[i][j] = c;
         }
     }
+
 
     std::vector<int> Lmate, Rmate;
     solve_dense(costs, Lmate, Rmate);
