@@ -27,6 +27,7 @@ install:
   - conda install -q pip pytest numpy cmake
   - pip install --upgrade pip
   - pip install wheel
+  - pip install --upgrade --ignore-installed setuptools
   - git submodule update --init --recursive
   - ps: >-
       if ($env:APPVEYOR_REPO_BRANCH -eq 'develop') {
