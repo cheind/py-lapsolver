@@ -47,7 +47,8 @@ test_script:
   - pip uninstall -y lapsolver
 
 on_success:
-  - if($env:APPVEYOR_REPO_TAG -eq 'true') {
+  ps: >-
+    if($env:APPVEYOR_REPO_TAG -eq 'true') {
       Write-Output ("Deploying " + $env:APPVEYOR_REPO_TAG_NAME + " to PyPI")
       pip install --upgrade twine
       # If powershell ever sees anything on stderr it thinks it's a fail.
