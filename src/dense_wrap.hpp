@@ -2,21 +2,12 @@
 #include <pybind11/numpy.h>
 #include <algorithm>
 #include <vector>
+#include <cmath>
 #include <limits>
 
 #include "dense.hpp"
 
 namespace py = pybind11;
-
-template<class T>
-inline bool isfinite_ext(T t) {
-    return std::isfinite<T>(t);
-}
-
-template<>
-inline bool isfinite_ext(int t) {
-    return true;
-}
 
 template<typename T, int ExtraFlags>
 py::tuple solve_dense_wrap(py::array_t<T, ExtraFlags> input1) {
@@ -37,7 +28,7 @@ py::tuple solve_dense_wrap(py::array_t<T, ExtraFlags> input1) {
     bool any_finite = false;
     T LARGE_COST = T(0);
     for(int i = 0; i < nrows*ncols; ++i) {
-        if (isfinite_ext<T>(data[i])) {
+        if (std::isfinite((double)data[i])) {
             any_finite = true;
             LARGE_COST = std::max<T>(LARGE_COST, data[i]);
         }
@@ -57,7 +48,7 @@ py::tuple solve_dense_wrap(py::array_t<T, ExtraFlags> input1) {
         for (int j =0; j < ncols; j++)
         {
             const T c = cptr[j];
-            if (isfinite_ext<T>(c))
+            if (std::isfinite((double)c))
                 costs[i][j] = c;
         }
     }
