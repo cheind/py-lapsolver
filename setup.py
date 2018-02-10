@@ -78,6 +78,7 @@ setup(
     license='MIT',
     long_description='',
     packages=['lapsolver', 'lapsolver.tests'],
+    include_package_data=True,
     ext_modules=[CMakeExtension('lapsolverc')],
     cmdclass=dict(build_ext=CMakeBuild, test=PyTest),
     zip_safe=False,
