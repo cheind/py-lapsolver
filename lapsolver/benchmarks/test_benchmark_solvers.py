@@ -4,29 +4,6 @@ import pytest
 import importlib
 import sys
 
-"""
-
-square_sizes = [(10,10), (100,100)]
-tall_sizes = [(10,10), (20,20)]
-
-square_matrices = [('square', np.random.uniform(size=size)) for size in square_sizes]
-tall_matrices = [('tall', np.random.uniform(size=size)) for size in tall_sizes]
-
-@pytest.mark.parametrize('data', [m for m in square_matrices if m[1].shape[0] < 5000])
-def test_bench_scipy(benchmark, data):
-
-    benchmark.group = '{} - {}x{}'.format(data[0], data[1].shape[0], data[1].shape[1])
-    print('running', benchmark.group)
-    benchmark(linear_sum_assignment, data[1])
-    
-
-@pytest.mark.parametrize('data', [('tall', m) for m in square_matrices])
-def test_bench_lapsolver(benchmark, data):
-
-    benchmark.group = '{} - {}x{}'.format(data[0], data[1].shape[0], data[1].shape[1])
-    print('running', benchmark.group)
-"""
-
 def load_solver_lapsolver():
     from lapsolver import solve_dense
 
@@ -103,16 +80,16 @@ def load_solvers():
 
 solvers = load_solvers()
 sizes = [
-    ([10,10], -80040), 
-    ([10,5], -80040), 
-    ([20,20], -175988), 
-    ([50,20], -467118),
-    ([50,50], -467118),    
-    ([100,100], 0),
-    ([200,200], 0),
-    ([500,500], 0),
-    ([1000,1000], 0),
-    ([5000,5000], 0),
+    ([10,10], -80040.0), 
+    ([10,5], -39518.0), 
+    ([20,20], -175988.0), 
+    ([50,20], -193922.0),
+    ([50,50], -467118.0),    
+    ([100,100], -970558.0),
+    ([200,200], -1967491.0),
+    ([500,500], -4968156.0),
+    ([1000,1000], -9968874.0),
+    ([5000,5000], -49969853.0),
 ]
 size_max = [5000,5000]
 
@@ -151,7 +128,6 @@ def test_benchmark_solver(benchmark, solver, scalar, size, expected):
 
     costs = icosts[:size[0], :size[1]].astype(scalar).copy()
     r = benchmark(solvers[solver], costs)
-    print(solver, size, r)
     if r != expected:
         benchmark.extra_info['success'] = False
 
