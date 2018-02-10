@@ -84,6 +84,6 @@ Currently, the following solvers are tested
 
 **reduced performance due to costly dense matrix to graph conversion. If you know a better way, please let me know.
 
-Please note that the y-axis is scaled logarithmically. Missing bars indicate excessive runtime or errors in returned result.
+Please note that the x-axis is scaled logarithmically. Missing bars indicate excessive runtime or errors in returned result.
 ![](./lapsolver/etc/benchmark-dtype-int.png)
 ![](./lapsolver/etc/benchmark-dtype-numpy.float32.png)
