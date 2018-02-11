@@ -2,3 +2,5 @@ include README.md LICENSE
 global-include CMakeLists.txt *.cmake
 recursive-include src *
 recursive-include pybind11/include *.h
+recursive-include lapsolver/data *
+recursive-include lapsolver/etc *
