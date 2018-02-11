@@ -2,8 +2,6 @@
 
 ### Install
 
-**Note: Until packages are ready, please use Install from source below!**
-
 ```
 pip install [--pre] lapsolver 
 ```
