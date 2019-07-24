@@ -8,4 +8,6 @@ find_package(OpenMP)
 pybind11_add_module(lapsolverc src/lapsolverc.cpp)
 
 target_compile_options(lapsolverc PUBLIC "$<$<CONFIG:RELEASE>:-O2>")
-target_compile_options(lapsolverc PUBLIC "$<$<CONFIG:RELEASE>:${OpenMP_CXX_FLAGS}>")
+IF(OpenMP_CXX_FOUND)
+  target_compile_options(lapsolverc PUBLIC "$<$<CONFIG:RELEASE>:${OpenMP_CXX_FLAGS}>")
+ENDIF()
