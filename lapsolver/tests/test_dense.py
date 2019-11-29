@@ -63,4 +63,26 @@ def test_solve_inf():
     r = lap.solve_dense(costs)
     expected = np.array([[0, 1, 2], [0, 2, 1]])
     np.testing.assert_allclose(r, expected)
-    
+
+def test_missing_edge_negative():
+    costs = np.array([[-1000, -1], [-1, np.nan]])
+    r = lap.solve_dense(costs)
+    # The optimal solution is (0, 1), (1, 0) with cost -1 + -1.
+    # If the implementation does not use a large enough constant, it may choose
+    # (0, 0), (1, 1) with cost -1000 + L.
+    expected = np.array([[0, 1], [1, 0]])
+    np.testing.assert_allclose(r, expected)
+
+def test_missing_edge_positive():
+    costs = np.array([
+        [np.nan, 1000, np.nan],
+        [np.nan, 1, 1000],
+        [1000, np.nan, 1],
+    ])
+    costs_copy = costs.copy()
+    r = lap.solve_dense(costs)
+    # The optimal solution is (0, 1), (1, 2), (2, 0) with cost 1000 + 1000 + 1000.
+    # If the implementation does not use a large enough constant, it may choose
+    # (0, 0), (1, 1), (2, 2) with cost (L + 1 + 1) instead.
+    expected = np.array([[0, 1, 2], [1, 2, 0]])
+    np.testing.assert_allclose(r, expected)
