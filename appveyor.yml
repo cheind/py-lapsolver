@@ -47,14 +47,14 @@ test_script:
   - ps: >-
       $wheel = cmd /r dir .\dist\*.tar.gz /b/s;
       cmd /c "pip install --verbose $wheel 2>&1"
-  - pytest -v -s -k small --pyargs lapsolver
+  - pytest --pyargs lapsolver
   - pip uninstall -y lapsolver
   # Try building binary wheel and install.
   # Redirect stderr of pip within powershell to avoid error.
   - ps: >-
       $wheel = cmd /r dir .\dist\*.whl /b/s;
       cmd /c "pip install --verbose $wheel 2>&1"
-  - pytest -v -s -k small --pyargs lapsolver
+  - pytest --pyargs lapsolver
   - pip uninstall -y lapsolver
 
 on_success:
@@ -74,12 +74,12 @@ artifacts:
   - path: "dist\\*.tar.gz"
     name: Wheels
 
-# notifications:
-#   - provider: Email
-#     to:
-#       - christoph.heindl@email.com
-#     on_build_success: true
-#     on_build_failure: true
+notifications:
+  - provider: Email
+    to:
+      - christoph.heindl@email.com
+    on_build_success: true
+    on_build_failure: true
 
 branches:
   only:

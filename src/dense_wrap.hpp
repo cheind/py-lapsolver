@@ -4,24 +4,13 @@
 #include <vector>
 #include <cmath>
 #include <limits>
-#include <cstdint>
 
 #include "dense.hpp"
 
 namespace py = pybind11;
 
-
-template<typename T>
-std::string numeric_type_name() {
-    std::string kind = (std::numeric_limits<T>::is_integer ? "int" : "float");
-    auto bytes = sizeof(T);
-    return kind + std::to_string(bytes * 8);
-}
-
-
 template<typename T, int ExtraFlags>
 py::tuple solve_dense_wrap(py::array_t<T, ExtraFlags> input1) {
-    py::print("solve_dense_wrap<T> with T =", numeric_type_name<T>());
     auto buf1 = input1.request();
 
     if (buf1.ndim != 2)
@@ -40,25 +29,21 @@ py::tuple solve_dense_wrap(py::array_t<T, ExtraFlags> input1) {
     T max_abs_cost = 0;
     for(int i = 0; i < nrows*ncols; ++i) {
         if (std::isfinite((double)data[i])) {
-            py::print("abs_cost", std::abs(data[i]));
             any_finite = true;
+            // Careful: Note that std::abs() is not a template.
             // https://en.cppreference.com/w/cpp/numeric/math/abs
             // https://en.cppreference.com/w/cpp/numeric/math/fabs
             max_abs_cost = std::max<T>(max_abs_cost, std::abs(data[i]));
         }
     }
-    py::print("max_abs_cost", max_abs_cost);
 
     if (!any_finite) {
         return py::make_tuple(py::array(), py::array());
     }
 
-    const int r = std::min<T>(nrows, ncols);
-    const int n = std::max<T>(nrows, ncols);
-    py::print("r", r);
-    py::print("n", n);
+    const int r = std::min<int>(nrows, ncols);
+    const int n = std::max<int>(nrows, ncols);
     const T LARGE_COST = 2 * r * max_abs_cost + 1;
-    py::print("LARGE_COST", LARGE_COST);
     std::vector<std::vector<T>> costs(n, std::vector<T>(n, LARGE_COST));
 
     for (int i = 0; i < nrows; i++)
@@ -76,12 +61,7 @@ py::tuple solve_dense_wrap(py::array_t<T, ExtraFlags> input1) {
     std::vector<int> Lmate, Rmate;
     solve_dense(costs, Lmate, Rmate);
 
-    for (int i = 0; i < nrows; i++)
-    {
-        int mate = Lmate[i];
-    }
-
-    std::vector<int32_t> rowids, colids;
+    std::vector<int> rowids, colids;
 
     for (int i = 0; i < nrows; i++)
     {
@@ -93,6 +73,5 @@ py::tuple solve_dense_wrap(py::array_t<T, ExtraFlags> input1) {
         }
     }
 
-    return py::make_tuple(py::array_t<int32_t>(rowids.size(), rowids.data()),
-                          py::array_t<int32_t>(colids.size(), colids.data()));
+    return py::make_tuple(py::array(rowids.size(), rowids.data()), py::array(colids.size(), colids.data()));
 }
