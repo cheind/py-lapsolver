@@ -80,6 +80,8 @@ py::tuple solve_dense_wrap(py::array_t<T, ExtraFlags> input1) {
             colids.push_back(mate);
         }
     }
+    py::print("len(rowids)", rowids.size());
 
-    return py::make_tuple(py::array(rowids.size(), rowids.data()), py::array(colids.size(), colids.data()));
+    return py::make_tuple(py::array(rowids.size(), rowids.data()),
+                          py::array(colids.size(), colids.data()));
 }
