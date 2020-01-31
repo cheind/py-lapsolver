@@ -36,10 +36,10 @@ PYBIND11_MODULE(lapsolverc, m) {
         Linear assignment problem solvers using native c-extensions.
     )pbdoc";
 
-    m.def("solve_dense", solve_dense_wrap<int, py::array::c_style | py::array::forcecast>);
-    m.def("solve_dense", solve_dense_wrap<long, py::array::c_style | py::array::forcecast>);
-    m.def("solve_dense", solve_dense_wrap<float, py::array::c_style | py::array::forcecast>);
-    m.def("solve_dense", solve_dense_wrap<double, py::array::c_style | py::array::forcecast>);
+    m.def("solve_dense", solve_dense_wrap<int, py::array::c_style>, py::arg().noconvert());
+    m.def("solve_dense", solve_dense_wrap<long, py::array::c_style>, py::arg().noconvert());
+    m.def("solve_dense", solve_dense_wrap<float, py::array::c_style>, py::arg().noconvert());
+    m.def("solve_dense", solve_dense_wrap<double, py::array::c_style>, py::arg().noconvert());
 
 #ifdef VERSION_INFO
     m.attr("__version__") = VERSION_INFO;
