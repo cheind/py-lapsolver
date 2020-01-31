@@ -5,12 +5,32 @@
 #include <cmath>
 #include <limits>
 
+#include <string>
+#include <cstdlib>
+#include <cxxabi.h>
+
 #include "dense.hpp"
 
 namespace py = pybind11;
 
+
+template<typename T>
+std::string type_name()
+{
+    int status;
+    std::string tname = typeid(T).name();
+    char *demangled_name = abi::__cxa_demangle(tname.c_str(), NULL, NULL, &status);
+    if(status == 0) {
+        tname = demangled_name;
+        std::free(demangled_name);
+    }
+    return tname;
+}
+
+
 template<typename T, int ExtraFlags>
 py::tuple solve_dense_wrap(py::array_t<T, ExtraFlags> input1) {
+    py::print("solve_dense_wrap<", type_name<T>(), ">");
     auto buf1 = input1.request();
 
     if (buf1.ndim != 2)

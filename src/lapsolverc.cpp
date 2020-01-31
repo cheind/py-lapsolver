@@ -36,10 +36,14 @@ PYBIND11_MODULE(lapsolverc, m) {
         Linear assignment problem solvers using native c-extensions.
     )pbdoc";
 
+    // pybind11 first tries each overload (in order) without conversion.
+    // If no match is found, it tries again with conversion, unless disallowed.
+    // This conversion will cast e.g. double to int.
+    // https://pybind11.readthedocs.io/en/stable/advanced/functions.html#overload-resolution-order
     m.def("solve_dense", solve_dense_wrap<int, py::array::c_style>, py::arg().noconvert());
     m.def("solve_dense", solve_dense_wrap<long, py::array::c_style>, py::arg().noconvert());
     m.def("solve_dense", solve_dense_wrap<float, py::array::c_style>, py::arg().noconvert());
-    m.def("solve_dense", solve_dense_wrap<double, py::array::c_style>, py::arg().noconvert());
+    m.def("solve_dense", solve_dense_wrap<double, py::array::c_style>);
 
 #ifdef VERSION_INFO
     m.attr("__version__") = VERSION_INFO;
