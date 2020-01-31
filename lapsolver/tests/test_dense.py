@@ -16,6 +16,22 @@ def test_plain_array():
     expected = np.array([[0, 1, 2], [2, 1, 0]])
     np.testing.assert_allclose(r, expected)
 
+def test_plain_array_integer():
+    costs = [[6, 9, 1],[10, 3, 2],[8, 5, 4]]
+    r = lap.solve_dense(costs)
+    expected = np.array([[0, 1, 2], [2, 1, 0]])
+    np.testing.assert_allclose(r, expected)
+
+def test_plain_array_fractional():
+    # Add fractional costs that change the solution.
+    # before: (1 + 3 + 8) = 12 < 13 = (6 + 5 + 2)
+    # after: (1.4 + 3.4 + 8.4) = 13.2 < 13
+    # This confirms that pylib11 did not cast float to int.
+    costs = [[6, 9, 1.4],[10, 3.4, 2],[8.4, 5, 4]]
+    r = lap.solve_dense(costs)
+    expected = np.array([[0, 1, 2], [0, 2, 1]])
+    np.testing.assert_allclose(r, expected)
+
 def test_nonsquare():
     costs = np.array([[6, 9],[10, 3],[8, 7]], dtype=float)
     
