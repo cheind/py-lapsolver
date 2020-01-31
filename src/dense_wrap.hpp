@@ -21,6 +21,7 @@ std::string numeric_type_name() {
 
 template<typename T, int ExtraFlags>
 py::tuple solve_dense_wrap(py::array_t<T, ExtraFlags> input1) {
+    py::print("solve_dense_wrap<T> with T =", numeric_type_name<T>());
     auto buf1 = input1.request();
 
     if (buf1.ndim != 2)
@@ -28,7 +29,6 @@ py::tuple solve_dense_wrap(py::array_t<T, ExtraFlags> input1) {
 
     const int nrows = int(buf1.shape[0]);
     const int ncols = int(buf1.shape[1]);    
-    py::print("solve_dense_wrap<T> with T ", numeric_type_name<T>(), "and shape", nrows, ncols);
 
     if (nrows == 0 || ncols == 0) {
         return py::make_tuple(py::array(), py::array());
@@ -52,16 +52,18 @@ py::tuple solve_dense_wrap(py::array_t<T, ExtraFlags> input1) {
     const int r = std::min<int>(nrows, ncols);
     const int n = std::max<int>(nrows, ncols);
     LARGE_COST = 2 * r * LARGE_COST + 1;
+    py::print("LARGE_COST", LARGE_COST);
     std::vector<std::vector<T>> costs(n, std::vector<T>(n, LARGE_COST));
 
     for (int i = 0; i < nrows; i++)
-    {   
+    {
         T *cptr = data + i*ncols;
         for (int j =0; j < ncols; j++)
         {
             const T c = cptr[j];
             if (std::isfinite((double)c))
                 costs[i][j] = c;
+            py::print("i,j,c", i, j, costs[i][j]);
         }
     }
 
@@ -69,7 +71,13 @@ py::tuple solve_dense_wrap(py::array_t<T, ExtraFlags> input1) {
     std::vector<int> Lmate, Rmate;
     solve_dense(costs, Lmate, Rmate);
 
-    std::vector<int> rowids, colids;
+    for (int i = 0; i < nrows; i++)
+    {
+        int mate = Lmate[i];
+        py::print("i,mate", i, mate);
+    }
+
+    std::vector<int32_t> rowids, colids;
 
     for (int i = 0; i < nrows; i++)
     {
@@ -82,6 +90,6 @@ py::tuple solve_dense_wrap(py::array_t<T, ExtraFlags> input1) {
     }
     py::print("len(rowids)", rowids.size());
 
-    return py::make_tuple(py::array(rowids.size(), rowids.data()),
-                          py::array(colids.size(), colids.data()));
+    return py::make_tuple(py::array_t<int32_t>(rowids.size(), rowids.data()),
+                          py::array_t<int32_t>(colids.size(), colids.data()));
 }

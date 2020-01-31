@@ -47,14 +47,14 @@ test_script:
   - ps: >-
       $wheel = cmd /r dir .\dist\*.tar.gz /b/s;
       cmd /c "pip install --verbose $wheel 2>&1"
-  - pytest -v -s --pyargs lapsolver
+  - pytest -v -s -k small --pyargs lapsolver
   - pip uninstall -y lapsolver
   # Try building binary wheel and install.
   # Redirect stderr of pip within powershell to avoid error.
   - ps: >-
       $wheel = cmd /r dir .\dist\*.whl /b/s;
       cmd /c "pip install --verbose $wheel 2>&1"
-  - pytest -v -s --pyargs lapsolver
+  - pytest -v -s -k small --pyargs lapsolver
   - pip uninstall -y lapsolver
 
 on_success:
