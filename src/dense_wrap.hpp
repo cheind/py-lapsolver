@@ -11,6 +11,9 @@ namespace py = pybind11;
 
 template<typename T, int ExtraFlags>
 py::tuple solve_dense_wrap(py::array_t<T, ExtraFlags> input1) {
+    py::print("solve_dense_wrap<T> where T is",
+              std::numeric_limits<T>::is_integer ? "int" : "float",
+              sizeof(T) * 8);
     auto buf1 = input1.request();
 
     if (buf1.ndim != 2)
