@@ -40,9 +40,11 @@ py::tuple solve_dense_wrap(py::array_t<T, ExtraFlags> input1) {
     T max_abs_cost = 0;
     for(int i = 0; i < nrows*ncols; ++i) {
         if (std::isfinite((double)data[i])) {
-            py::print("abs_cost", std::abs<T>(data[i]));
+            py::print("abs_cost", std::abs(data[i]));
             any_finite = true;
-            max_abs_cost = std::max<T>(max_abs_cost, std::abs<T>(data[i]));
+            // https://en.cppreference.com/w/cpp/numeric/math/abs
+            // https://en.cppreference.com/w/cpp/numeric/math/fabs
+            max_abs_cost = std::max<T>(max_abs_cost, std::abs(data[i]));
         }
     }
     py::print("max_abs_cost", max_abs_cost);
