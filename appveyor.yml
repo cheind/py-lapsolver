@@ -25,7 +25,7 @@ install:
   - conda update -q conda
   - conda config --set auto_update_conda no
   - conda install -q pip pytest numpy cmake
-  - pip install --upgrade pip
+  - python -m pip install --upgrade pip
   - pip install wheel
   - pip install --upgrade --ignore-installed setuptools
   - git submodule update --init --recursive
