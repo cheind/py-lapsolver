@@ -41,7 +41,6 @@ PYBIND11_MODULE(lapsolverc, m) {
     // https://pybind11.readthedocs.io/en/stable/advanced/functions.html#non-converting-arguments
     m.def("solve_dense", solve_dense_wrap<int, py::array::c_style>);
     m.def("solve_dense", solve_dense_wrap<long, py::array::c_style>);
-    m.def("solve_dense", solve_dense_wrap<double, py::array::c_style>);
     m.def("solve_dense", solve_dense_wrap<float, py::array::c_style>);
     // Use forcecast here to convert python list to numpy array (double).
     // https://pybind11.readthedocs.io/en/stable/advanced/pycpp/numpy.html#arrays
