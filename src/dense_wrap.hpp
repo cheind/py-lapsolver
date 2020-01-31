@@ -4,16 +4,23 @@
 #include <vector>
 #include <cmath>
 #include <limits>
+#include <cstdint>
 
 #include "dense.hpp"
 
 namespace py = pybind11;
 
+
+template<typename T>
+std::string numeric_type_name() {
+    std::string kind = (std::numeric_limits<T>::is_integer ? "int" : "float");
+    auto bytes = sizeof(T);
+    return kind + std::to_string(bytes * 8);
+}
+
+
 template<typename T, int ExtraFlags>
 py::tuple solve_dense_wrap(py::array_t<T, ExtraFlags> input1) {
-    py::print("solve_dense_wrap<T> where T is",
-              std::numeric_limits<T>::is_integer ? "int" : "float",
-              sizeof(T) * 8);
     auto buf1 = input1.request();
 
     if (buf1.ndim != 2)
@@ -21,6 +28,7 @@ py::tuple solve_dense_wrap(py::array_t<T, ExtraFlags> input1) {
 
     const int nrows = int(buf1.shape[0]);
     const int ncols = int(buf1.shape[1]);    
+    py::print("solve_dense_wrap<T> with T ", numeric_type_name<T>(), "and shape", nrows, ncols);
 
     if (nrows == 0 || ncols == 0) {
         return py::make_tuple(py::array(), py::array());
