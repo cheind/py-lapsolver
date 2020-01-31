@@ -3,7 +3,7 @@ from pytest import mark
 import numpy as np
 import lapsolver as lap
 
-@mark.parametrize('dtype', ['float32', 'float', 'int'])
+@mark.parametrize('dtype', ['float', 'int', 'float32', 'float64', 'int32', 'int64'])
 def test_small(dtype):
     costs = np.array([[6, 9, 1],[10, 3, 2],[8, 7, 4]], dtype=dtype)
     r = lap.solve_dense(costs)
