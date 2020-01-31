@@ -1,22 +1,14 @@
 import pytest
+from pytest import mark
 import numpy as np
 import lapsolver as lap
 
-def test_small():
-    costs = np.array([[6, 9, 1],[10, 3, 2],[8, 7, 4.]], dtype=np.float32)    
+@mark.parametrize('dtype', ['float32', 'float', 'int'])
+def test_small(dtype):
+    costs = np.array([[6, 9, 1],[10, 3, 2],[8, 7, 4]], dtype=dtype)
     r = lap.solve_dense(costs)
     expected = np.array([[0, 1, 2], [2, 1, 0]])
-    np.testing.assert_allclose(r, expected)
-
-    costs = np.array([[6, 9, 1],[10, 3, 2],[8, 7, 4.]], dtype=float)    
-    r = lap.solve_dense(costs)
-    expected = np.array([[0, 1, 2], [2, 1, 0]])
-    np.testing.assert_allclose(r, expected)
-
-    costs = np.array([[6, 9, 1],[10, 3, 2],[8, 7, 4.]], dtype=int)    
-    r = lap.solve_dense(costs)
-    expected = np.array([[0, 1, 2], [2, 1, 0]])
-    np.testing.assert_allclose(r, expected)
+    np.testing.assert_equal(r, expected)
 
 def test_plain_array():
     costs = [[6, 9, 1],[10, 3, 2],[8, 7, 4.]]
