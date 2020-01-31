@@ -40,8 +40,8 @@ PYBIND11_MODULE(lapsolverc, m) {
     // If no match is found, it tries again with conversion, unless disallowed.
     // This conversion will cast e.g. double to int.
     // https://pybind11.readthedocs.io/en/stable/advanced/functions.html#overload-resolution-order
-    m.def("solve_dense", solve_dense_wrap<int, py::array::c_style>, py::arg().noconvert());
-    m.def("solve_dense", solve_dense_wrap<long, py::array::c_style>, py::arg().noconvert());
+    m.def("solve_dense", solve_dense_wrap<int32_t, py::array::c_style>, py::arg().noconvert());
+    m.def("solve_dense", solve_dense_wrap<int64_t, py::array::c_style>, py::arg().noconvert());
     m.def("solve_dense", solve_dense_wrap<float, py::array::c_style>, py::arg().noconvert());
     m.def("solve_dense", solve_dense_wrap<double, py::array::c_style>);
 
