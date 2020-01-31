@@ -37,10 +37,10 @@ py::tuple solve_dense_wrap(py::array_t<T, ExtraFlags> input1) {
     T *data = (T *)buf1.ptr;
 
     bool any_finite = false;
-    T max_abs_cost = T(0);
+    T max_abs_cost = 0;
     for(int i = 0; i < nrows*ncols; ++i) {
         if (std::isfinite((double)data[i])) {
-            py::print("abs_cost", std::abs(data[i]));
+            py::print("abs_cost", std::abs<T>(data[i]));
             any_finite = true;
             max_abs_cost = std::max<T>(max_abs_cost, std::abs<T>(data[i]));
         }
