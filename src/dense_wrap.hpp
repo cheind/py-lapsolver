@@ -28,7 +28,7 @@ py::tuple solve_dense_wrap(py::array_t<T, ExtraFlags> input1) {
         throw std::runtime_error("Number of dimensions must be two");
 
     const int nrows = int(buf1.shape[0]);
-    const int ncols = int(buf1.shape[1]);    
+    const int ncols = int(buf1.shape[1]);
 
     if (nrows == 0 || ncols == 0) {
         return py::make_tuple(py::array(), py::array());
@@ -37,21 +37,25 @@ py::tuple solve_dense_wrap(py::array_t<T, ExtraFlags> input1) {
     T *data = (T *)buf1.ptr;
 
     bool any_finite = false;
-    T LARGE_COST = T(0);
+    T max_abs_cost = T(0);
     for(int i = 0; i < nrows*ncols; ++i) {
         if (std::isfinite((double)data[i])) {
+            py::print("abs_cost", std::abs(data[i]));
             any_finite = true;
-            LARGE_COST = std::max<T>(LARGE_COST, std::abs<T>(data[i]));
+            max_abs_cost = std::max<T>(max_abs_cost, std::abs<T>(data[i]));
         }
     }
-         
-    if (nrows == 0 || ncols == 0 || !any_finite) {
+    py::print("max_abs_cost", max_abs_cost);
+
+    if (!any_finite) {
         return py::make_tuple(py::array(), py::array());
     }
 
-    const int r = std::min<int>(nrows, ncols);
-    const int n = std::max<int>(nrows, ncols);
-    LARGE_COST = 2 * r * LARGE_COST + 1;
+    const int r = std::min<T>(nrows, ncols);
+    const int n = std::max<T>(nrows, ncols);
+    py::print("r", r);
+    py::print("n", n);
+    const T LARGE_COST = 2 * r * max_abs_cost + 1;
     py::print("LARGE_COST", LARGE_COST);
     std::vector<std::vector<T>> costs(n, std::vector<T>(n, LARGE_COST));
 
@@ -63,7 +67,6 @@ py::tuple solve_dense_wrap(py::array_t<T, ExtraFlags> input1) {
             const T c = cptr[j];
             if (std::isfinite((double)c))
                 costs[i][j] = c;
-            py::print("i,j,c", i, j, costs[i][j]);
         }
     }
 
@@ -74,7 +77,6 @@ py::tuple solve_dense_wrap(py::array_t<T, ExtraFlags> input1) {
     for (int i = 0; i < nrows; i++)
     {
         int mate = Lmate[i];
-        py::print("i,mate", i, mate);
     }
 
     std::vector<int32_t> rowids, colids;
@@ -88,7 +90,6 @@ py::tuple solve_dense_wrap(py::array_t<T, ExtraFlags> input1) {
             colids.push_back(mate);
         }
     }
-    py::print("len(rowids)", rowids.size());
 
     return py::make_tuple(py::array_t<int32_t>(rowids.size(), rowids.data()),
                           py::array_t<int32_t>(colids.size(), colids.data()));
