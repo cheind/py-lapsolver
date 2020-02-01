@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 def parse_args():
     parser = argparse.ArgumentParser(description='Plot benchmark results.', formatter_class=argparse.RawTextHelpFormatter)
 
-    parser.add_argument('benchmarkfile', type=str, help='Json file containing benchmark results')   
+    parser.add_argument('benchmarkfile', type=str, help='Json file containing benchmark results')
     #parser.add_argument('tests', type=str, help='Directory containing tracker result files')
     #parser.add_argument('--loglevel', type=str, help='Log level', default='info')
     #parser.add_argument('--fmt', type=str, help='Data format', default='mot15-2D')
@@ -17,7 +17,7 @@ def parse_args():
 
 def build_dataframe(args):
     dre = re.compile(r"'(.*)'")
-    
+
     with open(args.benchmarkfile) as f:
         data = json.load(f)
 
@@ -31,11 +31,14 @@ def build_dataframe(args):
 
 def draw_plots(df):
     sns.set_style("whitegrid")
-    for s,g in df.groupby('scalar'):
+    for s, g in df.groupby('scalar'):
+        print(g)
+        plt.figure()
         title='Benchmark results for dtype={}'.format(s)
-        ax = sns.barplot(x='mean-time', y='matrix-size', hue='solver', data=df, errwidth=0, palette="muted")
+        ax = sns.barplot(x='mean-time', y='matrix-size', hue='solver', data=g, errwidth=0, palette="muted")
         ax.set_xscale("log")
         ax.set_xlabel('mean-time (sec)')
+        plt.legend(loc='upper right')
         plt.title(title)
         plt.tight_layout()
         plt.savefig('benchmark-dtype-{}.png'.format(s), transparent=True, )
@@ -43,14 +46,12 @@ def draw_plots(df):
 
 
 def main():
-    print('here')
     args = parse_args()
 
     df = build_dataframe(args)
     draw_plots(df)
-    print(df)
-    
+
 
 if __name__ == '__main__':
     main()
-    
+

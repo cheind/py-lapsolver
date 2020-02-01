@@ -10,7 +10,7 @@ def load_solver_lapsolver():
     def run(costs):
         rids, cids = solve_dense(costs)
         return costs[rids, cids].sum()
-        
+
     return run
 
 def load_solver_scipy():
@@ -24,21 +24,21 @@ def load_solver_scipy():
 
 def load_solver_munkres():
     from munkres import Munkres, DISALLOWED
-    
+
     def run(costs):
         m = Munkres()
         idx = np.array(m.compute(costs), dtype=int)
         return costs[idx[:,0], idx[:,1]].sum()
-    
+
     return run
 
-def load_solver_lapjv():    
+def load_solver_lapjv():
     from lap import lapjv
 
     def run(costs):
         r = lapjv(costs, return_cost=True, extend_cost=True)
         return r[0]
-    
+
     return run
 
 def load_solver_ortools():
@@ -53,7 +53,7 @@ def load_solver_ortools():
             for c in range(costs.shape[1]):
                 if valid[r,c]:
                     assignment.AddArcWithCost(r, c, int(costs[r,c]*f))
-        
+
         # No error checking for now
         assignment.Solve()
         return assignment.OptimalCost() / f
@@ -65,7 +65,7 @@ def load_solvers():
         ('lapsolver', load_solver_lapsolver),
         ('lapjv', load_solver_lapjv),
         ('scipy', load_solver_scipy),
-        ('munkres', load_solver_munkres),        
+        ('munkres', load_solver_munkres),
         ('ortools', load_solver_ortools),
     ]
 
@@ -80,11 +80,11 @@ def load_solvers():
 
 solvers = load_solvers()
 sizes = [
-    ([10,10], -80040.0), 
-    ([10,5], -39518.0), 
-    ([20,20], -175988.0), 
+    ([10,5], -39518.0),
+    ([10,10], -80040.0),
+    ([20,20], -175988.0),
     ([50,20], -193922.0),
-    ([50,50], -467118.0),    
+    ([50,50], -467118.0),
     ([100,100], -970558.0),
     ([200,200], -1967491.0),
     ([500,500], -4968156.0),
@@ -101,7 +101,7 @@ icosts = np.random.randint(-1e4, 1e4, size=size_max)
     min_rounds=2,
     disable_gc=False,
     warmup=True,
-    warmup_iterations=1    
+    warmup_iterations=1
 )
 @pytest.mark.parametrize('solver', solvers.keys())
 @pytest.mark.parametrize('scalar', [int, np.float32])
@@ -112,7 +112,7 @@ def test_benchmark_solver(benchmark, solver, scalar, size, expected):
     exclude_above = {
         'munkres' : 200,
         'ortools' : 5000
-    }    
+    }
 
     benchmark.extra_info = {
         'solver': solver,
