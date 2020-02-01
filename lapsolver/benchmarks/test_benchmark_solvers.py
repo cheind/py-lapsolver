@@ -111,7 +111,6 @@ def test_benchmark_solver(benchmark, solver, scalar, size, expected):
 
     exclude_above = {
         'munkres' : 200,
-        'scipy' : 1000,
         'ortools' : 5000
     }    
 
