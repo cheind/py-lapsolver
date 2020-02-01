@@ -33,7 +33,7 @@ def draw_plots(df):
     sns.set_style("whitegrid")
     for s, g in df.groupby('scalar'):
         print(g)
-        plt.figure()
+        plt.figure(figsize=(8, 5.5))
         title='Benchmark results for dtype={}'.format(s)
         ax = sns.barplot(x='mean-time', y='matrix-size', hue='solver', data=g, errwidth=0, palette="muted")
         ax.set_xscale("log")
