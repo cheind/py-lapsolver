@@ -17,7 +17,7 @@ py::tuple solve_dense_wrap(py::array_t<T, ExtraFlags> input1) {
         throw std::runtime_error("Number of dimensions must be two");
 
     const int nrows = int(buf1.shape[0]);
-    const int ncols = int(buf1.shape[1]);    
+    const int ncols = int(buf1.shape[1]);
 
     if (nrows == 0 || ncols == 0) {
         return py::make_tuple(py::array(), py::array());
@@ -26,24 +26,28 @@ py::tuple solve_dense_wrap(py::array_t<T, ExtraFlags> input1) {
     T *data = (T *)buf1.ptr;
 
     bool any_finite = false;
-    T LARGE_COST = T(0);
+    T max_abs_cost = 0;
     for(int i = 0; i < nrows*ncols; ++i) {
         if (std::isfinite((double)data[i])) {
             any_finite = true;
-            LARGE_COST = std::max<T>(LARGE_COST, data[i]);
+            // Careful: Note that std::abs() is not a template.
+            // https://en.cppreference.com/w/cpp/numeric/math/abs
+            // https://en.cppreference.com/w/cpp/numeric/math/fabs
+            max_abs_cost = std::max<T>(max_abs_cost, std::abs(data[i]));
         }
     }
-         
-    if (nrows == 0 || ncols == 0 || !any_finite) {
+
+    if (!any_finite) {
         return py::make_tuple(py::array(), py::array());
     }
 
-    LARGE_COST = 2*LARGE_COST + 1;
+    const int r = std::min<int>(nrows, ncols);
     const int n = std::max<int>(nrows, ncols);
+    const T LARGE_COST = 2 * r * max_abs_cost + 1;
     std::vector<std::vector<T>> costs(n, std::vector<T>(n, LARGE_COST));
 
     for (int i = 0; i < nrows; i++)
-    {   
+    {
         T *cptr = data + i*ncols;
         for (int j =0; j < ncols; j++)
         {
@@ -62,11 +66,11 @@ py::tuple solve_dense_wrap(py::array_t<T, ExtraFlags> input1) {
     for (int i = 0; i < nrows; i++)
     {
         int mate = Lmate[i];
-		if (Lmate[i] < ncols && costs[i][mate] != LARGE_COST)
-		{
+        if (Lmate[i] < ncols && costs[i][mate] != LARGE_COST)
+        {
             rowids.push_back(i);
             colids.push_back(mate);
-		}
+        }
     }
 
     return py::make_tuple(py::array(rowids.size(), rowids.data()), py::array(colids.size(), colids.data()));

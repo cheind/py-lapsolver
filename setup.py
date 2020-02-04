@@ -72,7 +72,7 @@ if os.getenv('LAPSOLVER_RELEASE_TYPE', 'stable') == 'dev':
 setup(
     name='lapsolver',
     version=version,
-    author='Christoph Heindl',
+    author='Christoph Heindl, Jack Valmadre',
     url='https://github.com/cheind/py-lapsolver',
     description='Fast linear assignment problem solvers',
     license='MIT',
