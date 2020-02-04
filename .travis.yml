@@ -21,7 +21,7 @@ install:
     - conda create -q -n pyenv python=$PYTHON $deps
     - source activate pyenv
     - pip install pytest
-    - pip install cmake    
+    - pip install cmake==3.15
     - pip install .
 
 script: pytest --pyargs lapsolver
