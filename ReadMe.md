@@ -1,4 +1,6 @@
-**py-lapsolver** implements a linear sum assignment problem solver for dense matrices based on shortest path augmentation. In practice, it solves 5000x5000 problems in around 3 seconds.
+## py-lapsolver
+
+**py-lapsolver** implements a linear sum assignment problem solver for dense matrices based on shortest path augmentation in Python. In practice, it solves 5000x5000 problems in around 3 seconds.
 
 ### Install
 
