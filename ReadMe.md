@@ -85,3 +85,7 @@ Currently, the following solvers are tested
 Please note that the x-axis is scaled logarithmically. Missing bars indicate excessive runtime or errors in returned result.
 ![](./lapsolver/etc/benchmark-dtype-int.png)
 ![](./lapsolver/etc/benchmark-dtype-numpy.float32.png)
+
+#### Additional Benchmarks
+
+Berhane performs an in depth analysis of Python3 linear assignment problem solver at https://github.com/berhane/LAP-solvers
