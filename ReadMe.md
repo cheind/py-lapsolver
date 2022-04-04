@@ -91,3 +91,6 @@ Please note that the x-axis is scaled logarithmically. Missing bars indicate exc
 #### Additional Benchmarks
 
 Berhane performs an in depth analysis of Python3 linear assignment problem solver at https://github.com/berhane/LAP-solvers
+
+### References
+**py-lapsolver** heavily relies on [code](https://github.com/jaehyunp/stanfordacm/blob/9e1375cd4eba68a59dd7b1e2f81692653e9908a9/code/MinCostMatching.cc) published by  @jaehyunp at https://github.com/jaehyunp/
